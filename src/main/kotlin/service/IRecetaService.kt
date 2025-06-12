@@ -1,9 +1,11 @@
 package org.recualberti.service
 
+import org.recualberti.model.Receta
+
 interface IRecetaService {
-    fun crearReceta()
-    fun eliminarReceta()
+    fun crearReceta(receta: Receta)
+    fun eliminarReceta(id: Int)
     fun actualizarReceta()
-    fun mostrarReceta()
-    fun mostrarTodasReceta()
+    fun mostrarReceta(): List<Receta>
+    fun mostrarTodasReceta(): List<Receta>
 }

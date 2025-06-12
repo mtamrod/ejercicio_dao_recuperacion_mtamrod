@@ -59,18 +59,16 @@ class RecetaDaoH2 (
         return recetasList
     }
 
-    override fun actualizar() {
-        TODO("FALTA")
-        /*
+    override fun actualizar(id: Int, nombre: String, calorias: Int, ingredientes: List<String>, esVegana: Boolean) {
         ds.connection.use { conn ->
-            conn.prepareStatement("UPDATE recetas SET nombre = ? /*WHERE id = ?").use { stmt ->
+            conn.prepareStatement("UPDATE recetas SET nombre = ?, calorias = ?, ingredientes = ?, esVegana = ? WHERE id = ?").use { stmt ->
                 stmt.setString(1, nombre)
-                stmt.setInt(2, id)
+                stmt.setInt(2, calorias)
+                stmt.setString(3, ingredientes.toString())
+                stmt.setBoolean(4, esVegana)
                 stmt.executeUpdate()
             }
         }
-        */
-         */
     }
 
     override fun borrar(id: Int) {

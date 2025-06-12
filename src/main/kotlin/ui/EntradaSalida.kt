@@ -10,6 +10,25 @@ class EntradaSalida: IEntradaSalida {
         return readln()
     }
 
+    override fun leerLista(msj: String, saltoLinea: Boolean): List<String> {
+        val lista = mutableListOf("")
+        while (msj.isNotBlank()) {
+            lista.add(readln())
+        }
+
+        return lista
+    }
+
+    override fun leerBool(msj:String, saltoLinea: Boolean): Boolean {
+        if (msj == "Si") {
+            return true
+        } else if (msj == "No") {
+            return false
+        } else {
+            error("Debes indicar con 'Si' o 'No'", true)
+        }
+    }
+
     override fun error(mensaje: String, saltoLinea: Boolean) {
         mostrar("#ERROR -> $mensaje", saltoLinea)
     }

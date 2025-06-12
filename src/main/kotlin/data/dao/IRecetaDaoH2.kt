@@ -9,7 +9,7 @@ interface IRecetaDaoH2 {
 
     fun leerTodos(): MutableList<Receta>
 
-    fun actualizar()
+    fun actualizar(id: Int, nombre: String, calorias: Int, ingredientes: List<String>, esVegana: Boolean)
 
     fun borrar(id: Int)
 }

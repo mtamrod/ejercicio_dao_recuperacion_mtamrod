@@ -1,5 +1,6 @@
 package org.recualberti.app
 
+import org.recualberti.model.Receta
 import org.recualberti.service.IRecetaService
 import org.recualberti.ui.IEntradaSalida
 
@@ -9,7 +10,40 @@ class MenuConsola(
 ) {
     private var funcionando: Boolean = true
 
-    fun iniciar() {
+    public fun iniciar() {
+        fun salir() {
+            ui.mostrar("Saliendo...", false)
+            funcionando = false
+        }
+
+        fun crearReceta() {
+            val id = 1 //TODO: Id generado automaticamente
+            val nombre = ui.leer("Nombre: ", true)
+            val calorias = ui.leer("Calorias: ", true).toInt()
+            val ingredientes = ui.leerLista("Ingredientes: ", true)
+            val esVegana = ui.leerBool("¿Es Vegana?: ", true)
+                servicioReceta.crearReceta(Receta(id, nombre, calorias, ingredientes, esVegana))
+                ui.mostrar("Usuario insertado.", true)
+        }
+
+        fun mostrarReceta() {
+                val recetaUnica = servicioReceta.mostrarReceta()
+                if (recetaUnica.isEmpty()) ui.mostrar("No se encontró la receta.", true)
+                else recetaUnica.forEach { ui.mostrar(, true) }
+        }
+
+        fun mostrarTodasReceta() {
+            val recetas = servicioReceta.mostrarTodasReceta()
+            if (recetas.isEmpty()) ui.mostrar("No se encontraron recetas.", true)
+            else recetas.forEach { ui.mostrar("Id: ${it.id} - NOmbre: ${it.nombre} - Calorias: ${it.calorias} - Ingredientes: ${it.ingredientes} - Vegana: ${it.esVegana}", true) }
+        }
+
+        fun eliminarReceta() {
+            val id = ui.leer("Id de la receta a eliminar: ", false).toInt()
+                servicioReceta.eliminarReceta(id)
+                ui.mostrar("Receta eliminada.", false)
+        }
+
         while (funcionando) {
             ui.limpiarPantalla()
             ui.mostrar(
@@ -25,18 +59,17 @@ class MenuConsola(
             false)
 
             when (ui.leer("Opción: ", true)) {
-                "1" -> 
-                "2" ->
-                "3" ->
-                "4" ->
-                "5" ->
-                "6" ->
-            }
-        }
+                "1" -> servicioReceta.crearReceta(//TODO)
+                "2" -> servicioReceta.mostrarReceta()
+                "3" -> servicioReceta.mostrarTodasReceta()
+                "4" -> servicioReceta.actualizarReceta()
+                "5" -> servicioReceta.eliminarReceta(ui.leer("Id: ", true).toInt())
+                "6" -> salir()
 
-        private fun salir() {
-            ui.mostrar("Saliendo...", false)
-            funcionando = false
+                else -> ui.error("Opción no válida.", true)
+            }
+
+            //ui.pausa() //TODO
         }
     }
 }

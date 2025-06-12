@@ -5,6 +5,7 @@ import org.recualberti.app.MenuConsola
 import org.recualberti.data.dao.*
 import org.recualberti.data.db.DataSourceFactory
 import org.recualberti.data.db.DbStarter
+import org.recualberti.ui.EntradaSalida
 
 fun main() {
     val ds = DataSourceFactory.getDataSource()
@@ -18,8 +19,8 @@ fun main() {
     val servicioReceta = RecetaService(recetaDAO)
 
     // Inicialización del controlador
-    Controlador(
-        MenuConsola(),
-        ds
+    MenuConsola(
+        RecetaService(recetaDAO),
+        EntradaSalida()
     ).iniciar()
 }

@@ -1,9 +1,14 @@
 package org.recualberti.service
 
 import org.recualberti.data.dao.IRecetaDaoH2
+import org.recualberti.model.Receta
 
 class RecetaService(private val recetaDAO: IRecetaDaoH2): IRecetaService {
-    override fun crearReceta() {
+    override fun crearReceta(receta: Receta) {
+        TODO("Not yet implemented")
+    }
+
+    override fun eliminarReceta(id: Int) {
         TODO("Not yet implemented")
     }
 
@@ -11,15 +16,11 @@ class RecetaService(private val recetaDAO: IRecetaDaoH2): IRecetaService {
         TODO("Not yet implemented")
     }
 
-    override fun eliminarReceta() {
+    override fun mostrarReceta(): List<Receta> {
         TODO("Not yet implemented")
     }
 
-    override fun mostrarReceta() {
-        TODO("Not yet implemented")
-    }
-
-    override fun mostrarTodasReceta() {
+    override fun mostrarTodasReceta(): List<Receta> {
         TODO("Not yet implemented")
     }
 
