@@ -6,7 +6,7 @@ class Postre (
     calorias: Int,
     ingredientes: List<String>,
     esVegana: Boolean,
-    esDulce: Boolean
+    var esDulce: Boolean
 
 ) : Receta(id, nombre, calorias, ingredientes, esVegana) {
 

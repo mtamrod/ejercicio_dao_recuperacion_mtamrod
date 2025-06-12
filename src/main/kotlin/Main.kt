@@ -10,7 +10,7 @@ import org.recualberti.ui.EntradaSalida
 fun main() {
     val ds = DataSourceFactory.getDataSource()
 
-    // Crea las tablas si no exiten
+    // Crea las tablas si no existen
     DbStarter.start(ds)
 
     val recetaDAO = RecetaDaoH2(ds)

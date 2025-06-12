@@ -29,11 +29,12 @@ class MenuConsola(
         fun mostrarReceta() {
                 val recetaUnica = servicioReceta.mostrarReceta()
                 if (recetaUnica.isEmpty()) ui.mostrar("No se encontró la receta.", true)
-                else recetaUnica.forEach { ui.mostrar(, true) }
+                else recetaUnica.forEach { ui.mostrar("Id: ${it.id} - NOmbre: ${it.nombre} - Calorias: ${it.calorias} - Ingredientes: ${it.ingredientes} - Vegana: ${it.esVegana}", true) }
         }
 
         fun mostrarTodasReceta() {
             val recetas = servicioReceta.mostrarTodasReceta()
+
             if (recetas.isEmpty()) ui.mostrar("No se encontraron recetas.", true)
             else recetas.forEach { ui.mostrar("Id: ${it.id} - NOmbre: ${it.nombre} - Calorias: ${it.calorias} - Ingredientes: ${it.ingredientes} - Vegana: ${it.esVegana}", true) }
         }
@@ -42,6 +43,10 @@ class MenuConsola(
             val id = ui.leer("Id de la receta a eliminar: ", false).toInt()
                 servicioReceta.eliminarReceta(id)
                 ui.mostrar("Receta eliminada.", false)
+        }
+
+        fun actualizarReceta() {
+            TODO("No")
         }
 
         while (funcionando) {
@@ -59,11 +64,11 @@ class MenuConsola(
             false)
 
             when (ui.leer("Opción: ", true)) {
-                "1" -> servicioReceta.crearReceta(//TODO)
-                "2" -> servicioReceta.mostrarReceta()
-                "3" -> servicioReceta.mostrarTodasReceta()
-                "4" -> servicioReceta.actualizarReceta()
-                "5" -> servicioReceta.eliminarReceta(ui.leer("Id: ", true).toInt())
+                "1" -> crearReceta()
+                "2" -> mostrarReceta()
+                "3" -> mostrarTodasReceta()
+                "4" -> actualizarReceta()
+                "5" -> eliminarReceta()
                 "6" -> salir()
 
                 else -> ui.error("Opción no válida.", true)

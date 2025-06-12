@@ -26,6 +26,7 @@ class EntradaSalida: IEntradaSalida {
             return false
         } else {
             error("Debes indicar con 'Si' o 'No'", true)
+            return false
         }
     }
 

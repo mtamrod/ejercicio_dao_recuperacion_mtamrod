@@ -55,3 +55,57 @@ java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supporte
 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-06-12 14:16:44.172445+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; se esperaba "identifier"
+Syntax error in SQL statement "CREATE TABLE [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXIST RECETAS (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    nombre     VARCHAR(120)  NOT NULL,
+    calorias   INT           NOT NULL CHECK (calorias > 0),
+    es_vegana  BOOLEAN       NOT NULL
+); [42001-224]
+2025-06-12 14:18:38.977073+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; se esperaba "identifier"
+Syntax error in SQL statement "CREATE TABLE [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXIST RECETAS (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    nombre     VARCHAR(120)  NOT NULL,
+    calorias   INT           NOT NULL CHECK (calorias > 0),
+    es_vegana  BOOLEAN       NOT NULL
+); [42001-224]
+2025-06-12 14:20:37.269123+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE RECETAS [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"
+Syntax error in SQL statement "CREATE TABLE RECETAS [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; SQL statement:
+CREATE TABLE RECETAS IF NOT EXIST RECETAS (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    nombre     VARCHAR(120)  NOT NULL,
+    calorias   INT           NOT NULL CHECK (calorias > 0),
+    es_vegana  BOOLEAN       NOT NULL
+); [42000-224]
+2025-06-12 14:21:06.724582+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE RECETAS [*]IF NOT EXIST (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"
+Syntax error in SQL statement "CREATE TABLE RECETAS [*]IF NOT EXIST (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; SQL statement:
+CREATE TABLE RECETAS IF NOT EXIST (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    nombre     VARCHAR(120)  NOT NULL,
+    calorias   INT           NOT NULL CHECK (calorias > 0),
+    es_vegana  BOOLEAN       NOT NULL
+); [42000-224]
+2025-06-12 14:23:56.774815+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; se esperaba "identifier"
+Syntax error in SQL statement "CREATE TABLE [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXIST RECETAS (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    nombre     VARCHAR(120)  NOT NULL,
+    calorias   INT           NOT NULL CHECK (calorias > 0),
+    es_vegana  BOOLEAN       NOT NULL
+); [42001-224]
+2025-06-12 14:24:52.126234+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; se esperaba "identifier"
+Syntax error in SQL statement "CREATE TABLE [*]IF NOT EXIST RECETAS (\000a    id         INT AUTO_INCREMENT PRIMARY KEY,\000a    nombre     VARCHAR(120)  NOT NULL,\000a    calorias   INT           NOT NULL CHECK (calorias > 0),\000a    es_vegana  BOOLEAN       NOT NULL\000a);"; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXIST RECETAS (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    nombre     VARCHAR(120)  NOT NULL,
+    calorias   INT           NOT NULL CHECK (calorias > 0),
+    es_vegana  BOOLEAN       NOT NULL
+); [42001-224]

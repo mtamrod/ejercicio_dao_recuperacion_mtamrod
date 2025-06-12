@@ -1,11 +1,11 @@
 package org.recualberti.model
 
 open class Receta (
-    id: Int,
-    nombre: String,
-    calorias: Int,
-    ingredientes: List<String>,
-    esVegana: Boolean
+    val id: Int,
+    var nombre: String,
+    var calorias: Int,
+    var ingredientes: List<String>,
+    var esVegana: Boolean
 
 ) {
 

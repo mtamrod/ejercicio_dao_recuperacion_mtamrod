@@ -6,7 +6,7 @@ class Entrante(
     calorias: Int,
     ingredientes: List<String>,
     esVegana: Boolean,
-    esFrio: Boolean
+    var esFrio: Boolean
 
 ) : Receta(id, nombre, calorias, ingredientes, esVegana) {
 

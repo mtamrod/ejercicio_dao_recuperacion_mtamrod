@@ -6,7 +6,7 @@ class Principal(
     calorias: Int,
     ingredientes: List<String>,
     esVegana: Boolean,
-    momento: String
+    var momento: String
 
 ) : Receta(id, nombre, calorias, ingredientes, esVegana) {
 
