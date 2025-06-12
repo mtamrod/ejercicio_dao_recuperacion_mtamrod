@@ -14,8 +14,7 @@ class RecetaDaoH2 (
         }
     }
 
-    override fun leer(id: Int): Receta {
-        val recetasList = mutableListOf<Receta>()
+    override fun leer(): Receta {
 
         ds.connection.use { conn ->
             conn.createStatement().use { stmt ->

@@ -11,7 +11,7 @@ fun main() {
     val ds = DataSourceFactory.getDataSource()
 
     // Crea las tablas si no existen
-    DbStarter.start(ds)
+    //DbStarter.start(ds)
 
     val recetaDAO = RecetaDaoH2(ds)
 

@@ -15,7 +15,7 @@ object DbStarter {
 
             // Creacción de tablas
             stmt.execute("""
-            CREATE TABLE IF NOT EXIST RECETAS (
+            CREATE TABLE RECETAS (
                 id         INT AUTO_INCREMENT PRIMARY KEY,
                 nombre     VARCHAR(120)  NOT NULL,
                 calorias   INT           NOT NULL CHECK (calorias > 0),
@@ -24,7 +24,7 @@ object DbStarter {
             """.trimIndent())
 
             stmt.execute("""
-            CREATE TABLE IF NOT EXISTS INGREDIENTES (
+            CREATE TABLE INGREDIENTES (
                 id          INT AUTO_INCREMENT PRIMARY KEY,
                 receta_id   INT          NOT NULL,
                 descripcion VARCHAR(200) NOT NULL,
@@ -37,8 +37,8 @@ object DbStarter {
 
             //Creacción de índice con las consultas comunes
             stmt.execute("""
-            CREATE INDEX IDX_RECETA_NOMBRE  ON RECETAS (LOWER(nombre));
-            CREATE INDEX IDX_ING_RECETA_ID  ON INGREDIENTES (receta_id);
+            CREATE INDEX IDX_RECETA_NOMBRE ON RECETAS (LOWER(nombre));
+            CREATE INDEX IDX_ING_RECETA_ID ON INGREDIENTES (receta_id);
             """.trimIndent())
 
             conn.commit()

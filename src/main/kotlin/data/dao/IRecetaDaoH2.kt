@@ -5,7 +5,7 @@ import org.recualberti.model.Receta
 interface IRecetaDaoH2 {
     fun crearReceta()
 
-    fun leer(id: Int): Receta
+    fun leer(): Receta
 
     fun leerTodos(): MutableList<Receta>
 

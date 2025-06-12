@@ -10,44 +10,7 @@ class MenuConsola(
 ) {
     private var funcionando: Boolean = true
 
-    public fun iniciar() {
-        fun salir() {
-            ui.mostrar("Saliendo...", false)
-            funcionando = false
-        }
-
-        fun crearReceta() {
-            val id = 1 //TODO: Id generado automaticamente
-            val nombre = ui.leer("Nombre: ", true)
-            val calorias = ui.leer("Calorias: ", true).toInt()
-            val ingredientes = ui.leerLista("Ingredientes: ", true)
-            val esVegana = ui.leerBool("¿Es Vegana?: ", true)
-                servicioReceta.crearReceta(Receta(id, nombre, calorias, ingredientes, esVegana))
-                ui.mostrar("Usuario insertado.", true)
-        }
-
-        fun mostrarReceta() {
-                val recetaUnica = servicioReceta.mostrarReceta()
-                if (recetaUnica.isEmpty()) ui.mostrar("No se encontró la receta.", true)
-                else recetaUnica.forEach { ui.mostrar("Id: ${it.id} - NOmbre: ${it.nombre} - Calorias: ${it.calorias} - Ingredientes: ${it.ingredientes} - Vegana: ${it.esVegana}", true) }
-        }
-
-        fun mostrarTodasReceta() {
-            val recetas = servicioReceta.mostrarTodasReceta()
-
-            if (recetas.isEmpty()) ui.mostrar("No se encontraron recetas.", true)
-            else recetas.forEach { ui.mostrar("Id: ${it.id} - NOmbre: ${it.nombre} - Calorias: ${it.calorias} - Ingredientes: ${it.ingredientes} - Vegana: ${it.esVegana}", true) }
-        }
-
-        fun eliminarReceta() {
-            val id = ui.leer("Id de la receta a eliminar: ", false).toInt()
-                servicioReceta.eliminarReceta(id)
-                ui.mostrar("Receta eliminada.", false)
-        }
-
-        fun actualizarReceta() {
-            TODO("No")
-        }
+    fun iniciar() {
 
         while (funcionando) {
             ui.limpiarPantalla()
@@ -61,7 +24,8 @@ class MenuConsola(
                     5. Borrar
                     6. Salir
                 """.trimIndent(),
-            false)
+                false
+            )
 
             when (ui.leer("Opción: ", true)) {
                 "1" -> crearReceta()
@@ -76,5 +40,61 @@ class MenuConsola(
 
             //ui.pausa() //TODO
         }
+    }
+
+        private fun salir() {
+            ui.mostrar("Saliendo...", false)
+            funcionando = false
+        }
+
+        private fun crearReceta() {
+            val id = 1 //TODO: Id generado automaticamente
+            val nombre = ui.leer("Nombre: ", true)
+            val calorias = ui.leer("Calorias: ", true).toInt()
+            val ingredientes = ui.leerLista("Ingredientes: ", true)
+            val esVegana = ui.leerBool("¿Es Vegana?: ", true)
+            servicioReceta.crearReceta(Receta(id, nombre, calorias, ingredientes, esVegana))
+            ui.mostrar("Usuario insertado.", true)
+        }
+
+        private fun mostrarReceta() {
+            val recetaUnica = servicioReceta.mostrarReceta()
+            ui.mostrar(
+                "Id: ${recetaUnica.id} - NOmbre: ${recetaUnica.nombre} - Calorias: ${recetaUnica.calorias} - Ingredientes: ${recetaUnica.ingredientes} - Vegana: ${recetaUnica.esVegana}",
+                true
+            )
+        }
+
+
+    private fun mostrarTodasReceta() {
+        val recetas = servicioReceta.mostrarTodasReceta()
+
+        if (recetas.isEmpty()) ui.mostrar("No se encontraron recetas.", true)
+        else recetas.forEach {
+            ui.mostrar(
+                "Id: ${it.id} - NOmbre: ${it.nombre} - Calorias: ${it.calorias} - Ingredientes: ${it.ingredientes} - Vegana: ${it.esVegana}",
+                true
+            )
+        }
+    }
+
+    private fun eliminarReceta() {
+        val id = ui.leer("Id de la receta a eliminar: ", false).toInt()
+        servicioReceta.eliminarReceta(id)
+        ui.mostrar("Receta eliminada.", false)
+    }
+
+    private fun actualizarReceta() {
+        //val id = generadorId //TODO
+        val nombre = ui.leer("Nombre: ", true)
+        val calorias = ui.leer("Calorias: ", true).toInt()
+        val ingredientes = ui.leerLista("Ingredientes: ", true)
+        val esVegana = ui.leerBool("¿Vegana?: ", true)
+
+        /*
+        servicioReceta.actualizarReceta(id, nombre, calorias, ingredientes, esVegana)
+        ui.mostrar("Receta Actualizada!", true)
+        */
+
     }
 }

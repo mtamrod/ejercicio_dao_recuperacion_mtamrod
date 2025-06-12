@@ -5,24 +5,22 @@ import org.recualberti.model.Receta
 
 class RecetaService(private val recetaDAO: IRecetaDaoH2): IRecetaService {
     override fun crearReceta(receta: Receta) {
-        TODO("Not yet implemented")
+        recetaDAO.crearReceta()
     }
 
     override fun eliminarReceta(id: Int) {
-        TODO("Not yet implemented")
+        recetaDAO.borrar(id)
     }
 
-    override fun actualizarReceta() {
-        TODO("Not yet implemented")
+    override fun actualizarReceta(id: Int, nombre: String, calorias: Int, ingredientes: List<String>, esVegana: Boolean) {
+        recetaDAO.actualizar(id, nombre, calorias, ingredientes, esVegana)
     }
 
-    override fun mostrarReceta(): List<Receta> {
-        TODO("Not yet implemented")
+    override fun mostrarReceta(): Receta {
+        return recetaDAO.leer()
     }
 
     override fun mostrarTodasReceta(): List<Receta> {
-        TODO("Not yet implemented")
+        return recetaDAO.leerTodos()
     }
-
-
 }
