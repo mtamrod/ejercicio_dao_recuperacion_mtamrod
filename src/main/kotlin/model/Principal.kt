@@ -10,5 +10,4 @@ class Principal(
 
 ) : Receta(id, nombre, calorias, ingredientes, esVegana) {
 
-
 }

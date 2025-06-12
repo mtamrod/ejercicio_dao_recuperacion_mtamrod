@@ -1,4 +1,6 @@
 package org.recualberti.service
 
-class RecetaService {
+import org.recualberti.data.dao.IRecetaDaoH2
+
+class RecetaService(private val recetaDAO: IRecetaDaoH2): IRecetaService {
 }

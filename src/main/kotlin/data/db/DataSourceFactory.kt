@@ -7,7 +7,7 @@ import javax.sql.DataSource
 
 object DataSourceFactory {
 
-    private const val JDBC_URL = "jdbc:h2:./data/tienda"
+    private const val JDBC_URL = "jdbc:h2:./data/recetas"
     private const val USER = "sa"
     private const val PASSWORD = ""
 
