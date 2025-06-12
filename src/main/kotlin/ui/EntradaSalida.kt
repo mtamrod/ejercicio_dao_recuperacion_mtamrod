@@ -11,7 +11,7 @@ class EntradaSalida: IEntradaSalida {
     }
 
     override fun error(mensaje: String, saltoLinea: Boolean) {
-        mostrar("# ERROR! => $mensaje", saltoLinea)
+        mostrar("#ERROR -> $mensaje", saltoLinea)
     }
 
     override fun saltoLinea() {
