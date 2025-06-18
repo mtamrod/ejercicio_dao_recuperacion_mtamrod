@@ -1,9 +1,9 @@
 package org.recualberti.service
 
-import org.recualberti.data.dao.IRecetaDaoH2
+import org.recualberti.data.dao.IRecetaDAOH2
 import org.recualberti.model.Receta
 
-class RecetaService(private val recetaDAO: IRecetaDaoH2): IRecetaService {
+class RecetaService(private val recetaDAO: IRecetaDAOH2): IRecetaService {
     override fun crearReceta(receta: Receta) {
         recetaDAO.crearReceta()
     }

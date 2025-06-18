@@ -3,9 +3,9 @@ package org.recualberti.data.dao
 import org.recualberti.model.Receta
 import javax.sql.DataSource
 
-class RecetaDaoH2 (
+class RecetaDAOH2 (
     private val ds: DataSource
-): IRecetaDaoH2 {
+): IRecetaDAOH2 {
     override fun crearReceta() {
         ds.connection.use { conn ->
             conn.prepareStatement("INSERT INTO recetas (id, nombre, calorias, ingredientes, esVegana) VALUES (?, ?, ?, ?, ?)").use { stmt ->

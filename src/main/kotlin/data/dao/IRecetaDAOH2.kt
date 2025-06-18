@@ -2,7 +2,7 @@ package org.recualberti.data.dao
 
 import org.recualberti.model.Receta
 
-interface IRecetaDaoH2 {
+interface IRecetaDAOH2 {
     fun crearReceta()
 
     fun leer(): Receta

@@ -15,30 +15,53 @@ object DbStarter {
 
             // Creacción de tablas
             stmt.execute("""
-            CREATE TABLE RECETAS (
+            CREATE TABLE IF NOT EXISTS RECETAS (
+                id            INT AUTO_INCREMENT PRIMARY KEY,
+                nombre        VARCHAR(120)  NOT NULL,
+                calorias      INT           NOT NULL CHECK (calorias > 0),
+                es_vegana     BOOLEAN       NOT NULL,
+                tipo          VARCHAR(12)   NOT NULL
+            );
+            """.trimIndent())
+
+            stmt.execute("""
+            CREATE TABLE IF NOT EXISTS ENTRANTES (
+                id       INT PRIMARY KEY,
+                es_frio  BOOLEAN NOT NULL,
+                CONSTRAINT FK_ENTRANTE_RECETA FOREIGN KEY (id) REFERENCES RECETAS(id) ON DELETE CASCADE
+            );
+            """.trimIndent())
+
+            stmt.execute("""
+            CREATE TABLE IF NOT EXISTS PRINCIPALES (
+                id        INT PRIMARY KEY,
+                momento   VARCHAR(6) NOT NULL,
+                CONSTRAINT FK_PRINCIPAL_RECETA FOREIGN KEY (id) REFERENCES RECETAS(id) ON DELETE CASCADE
+            );
+            """.trimIndent())
+
+            stmt.execute("""
+            CREATE TABLE IF NOT EXISTS POSTRES (
+                id        INT PRIMARY KEY,
+                es_dulce  BOOLEAN NOT NULL,
+                CONSTRAINT FK_POSTRE_RECETA FOREIGN KEY (id) REFERENCES RECETAS(id) ON DELETE CASCADE
+            );
+            """.trimIndent())
+
+            stmt.execute("""
+            CREATE TABLE IF NOT EXISTS INGREDIENTES (
                 id         INT AUTO_INCREMENT PRIMARY KEY,
-                nombre     VARCHAR(120)  NOT NULL,
-                calorias   INT           NOT NULL CHECK (calorias > 0),
-                es_vegana  BOOLEAN       NOT NULL
-            );
-            """.trimIndent())
-
-            stmt.execute("""
-            CREATE TABLE INGREDIENTES (
-                id          INT AUTO_INCREMENT PRIMARY KEY,
-                receta_id   INT          NOT NULL,
+                receta_id  INT          NOT NULL,
                 descripcion VARCHAR(200) NOT NULL,
-                CONSTRAINT FK_ING_RECETA
-                    FOREIGN KEY (receta_id)
-                    REFERENCES RECETAS(id)
-                    ON DELETE CASCADE
+                CONSTRAINT FK_ING_RECETA FOREIGN KEY (receta_id) REFERENCES RECETAS(id) ON DELETE CASCADE
             );
             """.trimIndent())
 
-            //Creacción de índice con las consultas comunes
+            //Los índices han sido modificados debido a que la versión de H2 del sistema no era compatible con el código proporcionado por el profesor
             stmt.execute("""
-            CREATE INDEX IDX_RECETA_NOMBRE ON RECETAS (LOWER(nombre));
-            CREATE INDEX IDX_ING_RECETA_ID ON INGREDIENTES (receta_id);
+            CREATE INDEX IF NOT EXISTS IDX_RECETA_NOMBRE ON RECETAS (nombre);
+            CREATE INDEX IF NOT EXISTS IDX_RECETA_TIPO ON RECETAS (tipo);
+            CREATE INDEX IF NOT EXISTS IDX_ING_RECETA_ID ON INGREDIENTES (receta_id);  
             """.trimIndent())
 
             conn.commit()
