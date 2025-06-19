@@ -16,7 +16,7 @@ object DbStarter {
             // Creacción de tablas
             stmt.execute("""
             CREATE TABLE IF NOT EXISTS RECETAS (
-                id            INT AUTO_INCREMENT PRIMARY KEY,
+                id            INT PRIMARY KEY,
                 nombre        VARCHAR(120)  NOT NULL,
                 calorias      INT           NOT NULL CHECK (calorias > 0),
                 es_vegana     BOOLEAN       NOT NULL,

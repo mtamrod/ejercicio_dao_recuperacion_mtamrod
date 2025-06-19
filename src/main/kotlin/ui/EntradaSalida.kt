@@ -34,10 +34,12 @@ class EntradaSalida: IEntradaSalida {
 
 
     override fun leerBool(msj:String, saltoLinea: Boolean): Boolean {
-        val input: String = readln().trim()
-        var vegana: Boolean = false
+        var vegana = false
         var salir = true
         while (salir) {
+            print(msj)
+            val input: String = readln().trim()
+
             if (input == "Si") {
                 vegana = true
                 salir = false

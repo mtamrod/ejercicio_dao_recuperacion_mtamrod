@@ -1,76 +1,88 @@
 package org.recualberti.data.dao
 
-import org.recualberti.model.Receta
+import org.recualberti.model.*
 import javax.sql.DataSource
 
 class RecetaDAOH2 (
     private val ds: DataSource
 ): IRecetaDAOH2 {
-    override fun crearReceta() {
+    override fun crearReceta(receta: Receta) {
         ds.connection.use { conn ->
-            conn.prepareStatement("INSERT INTO recetas (id, nombre, calorias, ingredientes, esVegana) VALUES (?, ?, ?, ?, ?)").use { stmt ->
-                stmt.execute()
-            }
-        }
-    }
+            conn.autoCommit = false
+            conn.prepareStatement("INSERT INTO recetas (id, nombre, calorias, esVegana, tipo) VALUES (?, ?, ?, ?, ?)")
+                .use { stmt ->
+                    stmt.setInt(1, receta.id)
+                    stmt.setString(2, receta.nombre)
+                    stmt.setInt(3, receta.calorias)
+                    stmt.setBoolean(4, receta.esVegana)
+                    stmt.setString(5, receta.tipo)
+                    stmt.execute()
+                }
 
-    override fun leer(): Receta {
+            // Inclusión en la tabla (hija de receta)
+            when (receta) {
+                is Entrante -> {
+                    val stmt = conn.prepareStatement("INSERT INTO ENTRANTES (id, es_frio) VALUES (?, ?)")
+                    stmt.setInt(1, receta.id)
+                    stmt.setBoolean(2, receta.esFrio)
+                    stmt.executeUpdate()
+                }
 
-        ds.connection.use { conn ->
-            conn.createStatement().use { stmt ->
-                stmt.executeQuery("SELECT * FROM recetas WHERE id = ?").use { rs ->
-                    val receta =
-                        Receta(
-                            id = rs.getInt("id"),
-                            nombre = rs.getString("nombre"),
-                            calorias = rs.getInt("calorias"),
-                            ingredientes = listOf(rs.getString("ingredientes")),
-                            esVegana = rs.getBoolean("esVegana")
-                        )
+                is Principal -> {
+                    val stmt = conn.prepareStatement("INSERT INTO PRINCIPALES (id, momento) VALUES (?, ?)")
+                    stmt.setInt(1, receta.id)
+                    stmt.setString(2, receta.momento)
+                    stmt.executeUpdate()
+                }
 
-                    return receta
+                is Postre -> {
+                    val stmt = conn.prepareStatement("INSERT INTO POSTRES (id, es_dulce) VALUES (?, ?)")
+                    stmt.setInt(1, receta.id)
+                    stmt.setBoolean(2, receta.esDulce)
+                    stmt.executeUpdate()
+                }
+
+                else -> {
+                    throw IllegalArgumentException("El tipo de receta no existe")
                 }
             }
-        }
-    }
 
-    override fun leerTodos(): MutableList<Receta> {
-        val recetasList = mutableListOf<Receta>()
-
-        ds.connection.use { conn ->
-            conn.createStatement().use { stmt ->
-                stmt.executeQuery("SELECT * FROM recetas").use { rs ->
-                    while (rs.next()) {
-                        val receta =
-                            Receta(
-                                id = rs.getInt("id"),
-                                nombre = rs.getString("nombre"),
-                                calorias = rs.getInt("calorias"),
-                                ingredientes = listOf(rs.getString("ingredientes")),
-                                esVegana = rs.getBoolean("esVegana")
-                            )
-                        recetasList.add(receta)
-                    }
+            conn.prepareStatement("INSERT INTO INGREDIENTES (receta_id, descripcion) VALUES (?, ?)").use { stmt ->
+                for (ingrediente in receta.ingredientes) {
+                    stmt.setInt(1, receta.id)
+                    stmt.setString(2, ingrediente)
+                    stmt.execute()
                 }
+
+                conn.commit()
+                conn.autoCommit = true
             }
         }
-
-        return recetasList
     }
 
-    override fun actualizar(id: Int, nombre: String, calorias: Int, ingredientes: List<String>, esVegana: Boolean) {
+    override fun buscarReceta(nombre: String): Receta {
+        TODO("Not yet implemented")
+    }
+
+    override fun obtenerTodas(): MutableList<Receta> {
+        TODO("Not yet implemented")
+    }
+
+    override fun actualizarReceta(receta: Receta) {
         ds.connection.use { conn ->
-            conn.prepareStatement("UPDATE recetas SET nombre = ?, calorias = ?, ingredientes = ?, esVegana = ? WHERE id = ?").use { stmt ->
-                stmt.setString(1, nombre)
-                stmt.setInt(2, calorias)
-                stmt.setString(3, ingredientes.toString())
-                stmt.setBoolean(4, esVegana)
+            conn.prepareStatement(
+                "UPDATE recetas SET nombre = ?, calorias = ?, es_vegana = ?, tipo = ? WHERE id = ?").use { stmt ->
+                stmt.setString(1, receta.nombre)
+                stmt.setInt(2, receta.calorias)
+                stmt.setBoolean(3, receta.esVegana)
+                stmt.setString(4, receta.tipo)
+                stmt.setInt(5, receta.id)
                 stmt.executeUpdate()
             }
         }
     }
 
-    override fun borrar(id: Int) {
+    override fun borrarReceta(id: Int) {
         ds.connection.use { conn ->
             conn.prepareStatement("DELETE FROM recetas WHERE id = ?").use { stmt ->
                 stmt.setInt(1, id)

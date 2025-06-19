@@ -3,13 +3,13 @@ package org.recualberti.data.dao
 import org.recualberti.model.Receta
 
 interface IRecetaDAOH2 {
-    fun crearReceta()
+    fun crearReceta(receta: Receta)
 
-    fun leer(): Receta
+    fun buscarReceta(nombre: String): Receta
 
-    fun leerTodos(): MutableList<Receta>
+    fun obtenerTodas(): MutableList<Receta>
 
-    fun actualizar(id: Int, nombre: String, calorias: Int, ingredientes: List<String>, esVegana: Boolean)
+    fun actualizarReceta(receta: Receta)
 
-    fun borrar(id: Int)
+    fun borrarReceta(id: Int)
 }

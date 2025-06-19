@@ -1,13 +1,10 @@
 package org.recualberti.model
 
-open class Receta (
+abstract class Receta ( //Sealed o Abstract?
     val id: Int,
     var nombre: String,
     var calorias: Int,
-    var ingredientes: List<String>,
-    var esVegana: Boolean
-
-) {
-
-
-}
+    var esVegana: Boolean,
+    var tipo: String,
+    val ingredientes: List<String>
+)
