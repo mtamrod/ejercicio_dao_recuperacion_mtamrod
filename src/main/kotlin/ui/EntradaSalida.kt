@@ -11,23 +11,45 @@ class EntradaSalida: IEntradaSalida {
     }
 
     override fun leerLista(msj: String, saltoLinea: Boolean): List<String> {
-        val lista = mutableListOf("")
-        while (msj.isNotBlank()) {
-            lista.add(readln())
-        }
+        val lista = mutableListOf<String>()
+        var salir = true
+        while (salir) {
+            if (saltoLinea) {
+                println(msj)
+            } else {
+                print(msj)
+            }
 
+            val input = readln().trim()
+
+            if (input.isBlank()) {
+                // El usuario introduce un msj vacio == salir del bucle
+                salir = false
+            } else {
+                lista.add(input)
+            }
+        }
         return lista
     }
 
+
     override fun leerBool(msj:String, saltoLinea: Boolean): Boolean {
-        if (msj == "Si") {
-            return true
-        } else if (msj == "No") {
-            return false
-        } else {
-            error("Debes indicar con 'Si' o 'No'", true)
-            return false
+        val input: String = readln().trim()
+        var vegana: Boolean = false
+        var salir = true
+        while (salir) {
+            if (input == "Si") {
+                vegana = true
+                salir = false
+            } else if (input == "No") {
+                vegana = false
+                salir = false
+            } else {
+                error("Debes indicar con 'Si' o 'No'", true)
+                salir = true
+            }
         }
+        return vegana
     }
 
     override fun error(mensaje: String, saltoLinea: Boolean) {

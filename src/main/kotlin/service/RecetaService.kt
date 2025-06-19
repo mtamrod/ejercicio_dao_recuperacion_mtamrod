@@ -16,7 +16,7 @@ class RecetaService(private val recetaDAO: IRecetaDAOH2): IRecetaService {
         recetaDAO.actualizar(id, nombre, calorias, ingredientes, esVegana)
     }
 
-    override fun mostrarReceta(): Receta {
+    override fun mostrarReceta(id: Int): Receta {
         return recetaDAO.leer()
     }
 
