@@ -35,7 +35,7 @@ object DbStarter {
             stmt.execute("""
             CREATE TABLE IF NOT EXISTS PRINCIPALES (
                 id        INT PRIMARY KEY,
-                momento   VARCHAR(6) NOT NULL,
+                momento   VARCHAR(8) NOT NULL,
                 CONSTRAINT FK_PRINCIPAL_RECETA FOREIGN KEY (id) REFERENCES RECETAS(id) ON DELETE CASCADE
             );
             """.trimIndent())

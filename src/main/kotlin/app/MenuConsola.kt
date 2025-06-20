@@ -1,6 +1,7 @@
 package org.recualberti.app
 
-import org.recualberti.model.Receta
+import org.recualberti.data.db.IdFactory
+import org.recualberti.model.*
 import org.recualberti.service.IRecetaService
 import org.recualberti.ui.IEntradaSalida
 
@@ -51,25 +52,49 @@ class MenuConsola(
     }
 
     private fun crearReceta() {
-        val id = 1 //TODO: Id generado automaticamente
-        val nombre = ui.leer("Nombre: ", true)
-        val calorias = ui.leer("Calorias: ", true).toInt()
-        val ingredientes = ui.leerLista("Ingredientes: ", true) //TODO: Como gestionar lista?
-        val esVegana = ui.leerBool("¿Es Vegana?: ", true)
-        servicioReceta.crearReceta(Receta(id, nombre, calorias, ingredientes, esVegana))
-        ui.mostrar("Usuario insertado.", true)
+        val nombre = ui.leer("Nombre: ")
+        val calorias = ui.leer("Calorias: ").toInt()
+        val ingredientes = ui.leerLista("Ingredientes: ")
+        val esVegana = ui.leerBool("¿Es Vegana?(Si/No): ")
+
+        val tipo = ui.leer("Tipo de receta (entrante/principal/postre): ", true).lowercase()
+
+        val receta = when (tipo) {
+            "entrante" -> {
+                val esFrio = ui.leerBool("¿Frío? (Si/No): ", true)
+                Entrante(0, nombre, calorias, esVegana, ingredientes, esFrio)
+            }
+            "principal" -> {
+                val momento = ui.leer("¿Momento? (almuerzo, cena...): ", true)
+                Principal(0, nombre, calorias, esVegana, ingredientes, momento)
+            }
+            "postre" -> {
+                val esDulce = ui.leerBool("¿Dulce? (Si/No): ", true)
+                Postre(0, nombre, calorias, esVegana, ingredientes, esDulce)
+            }
+            else -> {
+                ui.error("El tipo de receta no es válido", true)
+                return
+            }
+        }
+        servicioReceta.crearReceta(receta)
+        ui.mostrar("Receta insertada correctamente.", true)
     }
 
+
     private fun mostrarReceta(id: Int) { //TODO: Mostrar receta deber de ser por id
-        val recetaUnica = servicioReceta.mostrarReceta(id)
+        /*
+        val recetaUnica = servicioReceta.buscarReceta(nombre)
         ui.mostrar(
             "Id: ${recetaUnica.id} - NOmbre: ${recetaUnica.nombre} - Calorias: ${recetaUnica.calorias} - Ingredientes: ${recetaUnica.ingredientes} - Vegana: ${recetaUnica.esVegana}",
             true
         )
+
+         */
     }
 
     private fun mostrarTodasReceta() {
-        val recetas = servicioReceta.mostrarTodasReceta()
+        val recetas = servicioReceta.obtenerTodas()
 
         if (recetas.isEmpty()) ui.mostrar("No se encontraron recetas.", true)
         else recetas.forEach {

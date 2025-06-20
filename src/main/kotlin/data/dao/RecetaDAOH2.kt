@@ -1,5 +1,6 @@
 package org.recualberti.data.dao
 
+import org.recualberti.data.db.IdFactory
 import org.recualberti.model.*
 import javax.sql.DataSource
 
@@ -8,10 +9,12 @@ class RecetaDAOH2 (
 ): IRecetaDAOH2 {
     override fun crearReceta(receta: Receta) {
         ds.connection.use { conn ->
+            val id = IdFactory.generarId(conn)  // Generamos el ID aquí
+
             conn.autoCommit = false
-            conn.prepareStatement("INSERT INTO recetas (id, nombre, calorias, esVegana, tipo) VALUES (?, ?, ?, ?, ?)")
+            conn.prepareStatement("INSERT INTO recetas (id, nombre, calorias, es_Vegana, tipo) VALUES (?, ?, ?, ?, ?)")
                 .use { stmt ->
-                    stmt.setInt(1, receta.id)
+                    stmt.setInt(1, id)
                     stmt.setString(2, receta.nombre)
                     stmt.setInt(3, receta.calorias)
                     stmt.setBoolean(4, receta.esVegana)
@@ -23,21 +26,21 @@ class RecetaDAOH2 (
             when (receta) {
                 is Entrante -> {
                     val stmt = conn.prepareStatement("INSERT INTO ENTRANTES (id, es_frio) VALUES (?, ?)")
-                    stmt.setInt(1, receta.id)
+                    stmt.setInt(1, id)
                     stmt.setBoolean(2, receta.esFrio)
                     stmt.executeUpdate()
                 }
 
                 is Principal -> {
                     val stmt = conn.prepareStatement("INSERT INTO PRINCIPALES (id, momento) VALUES (?, ?)")
-                    stmt.setInt(1, receta.id)
+                    stmt.setInt(1, id)
                     stmt.setString(2, receta.momento)
                     stmt.executeUpdate()
                 }
 
                 is Postre -> {
                     val stmt = conn.prepareStatement("INSERT INTO POSTRES (id, es_dulce) VALUES (?, ?)")
-                    stmt.setInt(1, receta.id)
+                    stmt.setInt(1, id)
                     stmt.setBoolean(2, receta.esDulce)
                     stmt.executeUpdate()
                 }
@@ -49,7 +52,7 @@ class RecetaDAOH2 (
 
             conn.prepareStatement("INSERT INTO INGREDIENTES (receta_id, descripcion) VALUES (?, ?)").use { stmt ->
                 for (ingrediente in receta.ingredientes) {
-                    stmt.setInt(1, receta.id)
+                    stmt.setInt(1, id)
                     stmt.setString(2, ingrediente)
                     stmt.execute()
                 }
