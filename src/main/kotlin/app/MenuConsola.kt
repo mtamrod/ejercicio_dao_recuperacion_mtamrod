@@ -29,10 +29,10 @@ class MenuConsola(
                 true
             )
 
-            when (ui.leer("\nOpción: ", true)) {
+            when (ui.leer("Opción: ", true)) {
                 "1" -> crearReceta()
-                "2" -> mostrarReceta(ui.leer("Introduce el id de la receta", true).toInt())
-                "3" -> mostrarTodasReceta()
+                "2" -> buscarReceta(ui.leer("Introduce el nombre de la receta"))
+                "3" -> listarRecetas()
                 "4" -> actualizarReceta()
                 "5" -> eliminarReceta()
                 "6" -> salir()
@@ -43,8 +43,6 @@ class MenuConsola(
             //ui.pausa() //TODO
         }
     }
-
-
 
     private fun salir() {
         ui.mostrar("Saliendo...", false)
@@ -81,19 +79,15 @@ class MenuConsola(
         ui.mostrar("Receta insertada correctamente.", true)
     }
 
-
-    private fun mostrarReceta(id: Int) { //TODO: Mostrar receta deber de ser por id
-        /*
+    private fun buscarReceta(nombre: String) { //TODO: Mostrar receta deber de ser por id
         val recetaUnica = servicioReceta.buscarReceta(nombre)
         ui.mostrar(
-            "Id: ${recetaUnica.id} - NOmbre: ${recetaUnica.nombre} - Calorias: ${recetaUnica.calorias} - Ingredientes: ${recetaUnica.ingredientes} - Vegana: ${recetaUnica.esVegana}",
+            "Id: ${recetaUnica.id} - Nombre: ${recetaUnica.nombre} - Calorias: ${recetaUnica.calorias} - Ingredientes: ${recetaUnica.ingredientes} - Vegana: ${recetaUnica.esVegana}",
             true
         )
-
-         */
     }
 
-    private fun mostrarTodasReceta() {
+    private fun listarRecetas() {
         val recetas = servicioReceta.obtenerTodas()
 
         if (recetas.isEmpty()) ui.mostrar("No se encontraron recetas.", true)
