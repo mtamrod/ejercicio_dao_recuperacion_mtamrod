@@ -7,6 +7,7 @@ import javax.sql.DataSource
 class RecetaDAOH2 (
     private val ds: DataSource
 ): IRecetaDAOH2 {
+
     override fun crearReceta(receta: Receta) {
         ds.connection.use { conn ->
             val id = IdFactory.generarId(conn)  // Generamos el ID aquí
@@ -73,7 +74,7 @@ class RecetaDAOH2 (
                     val nombre = consulta.getString("nombre")
                     val calorias = consulta.getInt("calorias")
                     val esVegana = consulta.getBoolean("es_vegana")
-                    val tipo = consulta.getString("tipo")
+                    val tipo = consulta.getString("tipo").uppercase()
 
                     //Consulta de la tabla ingredientes (Para poder mostrarlos)
                     val ingredientesReceta = mutableListOf<String>() //Ingredientes a mostrar
@@ -138,8 +139,76 @@ class RecetaDAOH2 (
         return null
     }
 
-    override fun obtenerTodas(): MutableList<Receta> {
-        TODO("Not yet implemented")
+    override fun obtenerTodas(): List<Receta> {
+        val recetas = mutableListOf<Receta>()
+
+        ds.connection.use { conn ->
+            conn.prepareStatement("SELECT * FROM recetas").use { stmt ->
+                val consulta = stmt.executeQuery()
+
+                while (consulta.next()) {
+                    val id = consulta.getInt("id")
+                    val nombre = consulta.getString("nombre")
+                    val calorias = consulta.getInt("calorias")
+                    val esVegana = consulta.getBoolean("es_vegana")
+                    val tipo = consulta.getString("tipo").uppercase() // para evitar errores por mayúsculas
+
+                    //Consulta de la tabla ingredientes (Para poder mostrarlos)
+                    val ingredientesReceta = mutableListOf<String>() //Ingredientes a mostrar
+                    conn.prepareStatement("SELECT descripcion FROM INGREDIENTES WHERE receta_id = ?").use { ingredienteStmt ->
+                        ingredienteStmt.setInt(1, id)
+                        val consultaIngredientes = ingredienteStmt.executeQuery()
+                        while (consultaIngredientes.next()) {
+                            ingredientesReceta.add(consultaIngredientes.getString("descripcion"))
+                        }
+                    }
+
+                    // Crear la instancia concreta según tipo
+                    val receta: Receta? = when (tipo) {
+                        "ENTRANTE" -> {
+                            conn.prepareStatement("SELECT es_frio FROM ENTRANTES WHERE id = ?").use { tipoStmt ->
+                                tipoStmt.setInt(1, id)
+                                val resultadoSub = tipoStmt.executeQuery()
+                                if (resultadoSub.next()) {
+                                    Entrante(id, nombre, calorias, esVegana, ingredientesReceta, resultadoSub.getBoolean("es_frio"))
+                                } else {
+                                    null
+                                }
+                            }
+                        }
+                        "PRINCIPAL" -> {
+                            conn.prepareStatement("SELECT momento FROM PRINCIPALES WHERE id = ?").use { tipoStmt ->
+                                tipoStmt.setInt(1, id)
+                                val resultadoSub = tipoStmt.executeQuery()
+
+                                if (resultadoSub.next()) {
+                                    Principal(id, nombre, calorias, esVegana, ingredientesReceta, resultadoSub.getString("momento"))
+                                } else {
+                                    null
+                                }
+                            }
+                        }
+                        "POSTRE" -> {
+                            conn.prepareStatement("SELECT es_dulce FROM POSTRES WHERE id = ?").use { tipoStmt ->
+                                tipoStmt.setInt(1, id)
+                                val resultadoSub = tipoStmt.executeQuery()
+                                if (resultadoSub.next()) {
+                                    Postre(id, nombre, calorias, esVegana, ingredientesReceta, resultadoSub.getBoolean("es_dulce"))
+                                } else {
+                                    null
+                                }
+                            }
+                        }
+                        else -> null
+                    }
+
+                    if (receta != null) {
+                        recetas.add(receta)
+                    }
+                }
+            }
+        }
+        return recetas
     }
 
     override fun actualizarReceta(receta: Receta) {

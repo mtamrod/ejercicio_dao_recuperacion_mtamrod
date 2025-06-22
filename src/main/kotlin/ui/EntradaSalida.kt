@@ -7,7 +7,7 @@ class EntradaSalida: IEntradaSalida {
 
     override fun leer(msj: String, saltoLinea: Boolean): String {
         if (msj.isNotBlank()) mostrar(msj, saltoLinea)
-        return readln()
+        return readln().lowercase()
     }
 
     override fun leerLista(msj: String, saltoLinea: Boolean): List<String> {
@@ -20,7 +20,7 @@ class EntradaSalida: IEntradaSalida {
                 print(msj)
             }
 
-            val input = readln().trim()
+            val input = readln().trim().lowercase()
 
             if (input.isBlank()) {
                 // El usuario introduce un msj vacio == salir del bucle
@@ -32,13 +32,12 @@ class EntradaSalida: IEntradaSalida {
         return lista
     }
 
-
     override fun leerBool(msj:String, saltoLinea: Boolean): Boolean {
         var vegana = false
         var salir = true
         while (salir) {
             print(msj)
-            val input: String = readln().trim()
+            val input: String = readln().trim().lowercase()
 
             if (input == "Si") {
                 vegana = true
@@ -67,6 +66,6 @@ class EntradaSalida: IEntradaSalida {
     }
 
     override fun pausa(msj: String) {
-        leer(msj, true)
+        leer("\n" + msj, false)
     }
 }

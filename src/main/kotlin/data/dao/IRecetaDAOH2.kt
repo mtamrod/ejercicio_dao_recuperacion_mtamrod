@@ -7,7 +7,7 @@ interface IRecetaDAOH2 {
 
     fun buscarReceta(id: Int): Receta?
 
-    fun obtenerTodas(): MutableList<Receta>
+    fun obtenerTodas(): List<Receta>
 
     fun actualizarReceta(receta: Receta)
 

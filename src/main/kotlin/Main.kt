@@ -15,9 +15,6 @@ fun main() {
 
     val recetaDAO = RecetaDAOH2(ds)
 
-    // Configuración de servicios
-    val servicioReceta = RecetaService(recetaDAO)
-
     // Inicialización del controlador
     MenuConsola(
         RecetaService(recetaDAO),
