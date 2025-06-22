@@ -16,8 +16,8 @@ class RecetaService(private val recetaDAO: IRecetaDAOH2): IRecetaService {
         recetaDAO.actualizarReceta(receta)
     }
 
-    override fun buscarReceta(nombre: String): Receta {
-        return recetaDAO.buscarReceta(nombre)
+    override fun buscarReceta(id: Int): Receta? {
+        return recetaDAO.buscarReceta(id)
     }
 
     override fun obtenerTodas(): List<Receta> {

@@ -29,9 +29,9 @@ class MenuConsola(
                 true
             )
 
-            when (ui.leer("Opción: ", true)) {
+            when (ui.leer("Opción: ", false)) {
                 "1" -> crearReceta()
-                "2" -> buscarReceta(ui.leer("Introduce el nombre de la receta"))
+                "2" -> buscarReceta(ui.leer("Introduce el id de la receta: ").toInt())
                 "3" -> listarRecetas()
                 "4" -> actualizarReceta()
                 "5" -> eliminarReceta()
@@ -79,12 +79,50 @@ class MenuConsola(
         ui.mostrar("Receta insertada correctamente.", true)
     }
 
-    private fun buscarReceta(nombre: String) { //TODO: Mostrar receta deber de ser por id
-        val recetaUnica = servicioReceta.buscarReceta(nombre)
-        ui.mostrar(
-            "Id: ${recetaUnica.id} - Nombre: ${recetaUnica.nombre} - Calorias: ${recetaUnica.calorias} - Ingredientes: ${recetaUnica.ingredientes} - Vegana: ${recetaUnica.esVegana}",
-            true
-        )
+    private fun buscarReceta(id: Int) {
+        val receta = servicioReceta.buscarReceta(id)
+
+        if (receta != null) {
+            // Encabezado
+            val encabezado = String.format(
+                "%-4s | %-15s | %-9s | %-11s | %-30s | %-15s",
+                "ID", "Nombre", "Calorías", "Vegana", "Ingredientes", "Extra"
+            )
+            ui.mostrar(encabezado, true)
+            ui.mostrar("-".repeat(encabezado.length), true)
+
+            // Ingredientes como string
+            val ingredientesStr = receta.ingredientes.joinToString(", ")
+
+            // Campo adicional según el tipo de receta
+            val extra = when (receta) {
+                is Entrante -> "Frío: ${receta.esFrio}"
+                is Principal -> "Momento: ${receta.momento}"
+                is Postre -> {
+                    if (receta.esDulce) {
+                        "Dulce: Si"
+                    } else {
+                        "Dulce: No"
+                    }
+                }
+                else -> "N/A"
+            }
+
+            // Fila de datos
+            val fila = String.format(
+                "%-4d | %-15s | %-9d | %-11s | %-30s | %-15s",
+                receta.id,
+                receta.nombre,
+                receta.calorias,
+                if (receta.esVegana) "Sí" else "No",
+                ingredientesStr.take(30), // Truncamos si es muy largo
+                extra
+            )
+
+            ui.mostrar(fila, true)
+        } else {
+            ui.error("No se encontró ninguna receta con el ID: $id", true)
+        }
     }
 
     private fun listarRecetas() {

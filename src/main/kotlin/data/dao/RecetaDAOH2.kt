@@ -63,8 +63,79 @@ class RecetaDAOH2 (
         }
     }
 
-    override fun buscarReceta(nombre: String): Receta {
-        TODO("Not yet implemented")
+    override fun buscarReceta(id: Int): Receta? {
+        ds.connection.use { conn ->
+            conn.prepareStatement("SELECT * FROM recetas WHERE id = ?").use { stmt ->
+                stmt.setInt(1, id)
+
+                val consulta = stmt.executeQuery()
+                if (consulta.next()) {
+                    val nombre = consulta.getString("nombre")
+                    val calorias = consulta.getInt("calorias")
+                    val esVegana = consulta.getBoolean("es_vegana")
+                    val tipo = consulta.getString("tipo")
+
+                    //Consulta de la tabla ingredientes (Para poder mostrarlos)
+                    val ingredientesReceta = mutableListOf<String>() //Ingredientes a mostrar
+                    conn.prepareStatement("SELECT descripcion FROM INGREDIENTES WHERE receta_id = ?").use { ingredienteStmt ->
+                        ingredienteStmt.setInt(1, id)
+
+                        val consultaIngredientes = ingredienteStmt.executeQuery()
+                        while (consultaIngredientes.next()) {
+                            ingredientesReceta.add(consultaIngredientes.getString("descripcion"))
+                        }
+                    }
+
+                    // Crear la instancia concreta según el tipo
+                    return when (tipo) {
+                        "ENTRANTE" -> {
+                            conn.prepareStatement("SELECT es_frio FROM ENTRANTES WHERE id = ?").use { tipoStmt ->
+                                tipoStmt.setInt(1, id)
+
+                                val resultadoSub = tipoStmt.executeQuery()
+                                if (resultadoSub.next()) {
+                                    Entrante(id, nombre, calorias, esVegana, ingredientesReceta,resultadoSub.getBoolean("es_frio"))
+                                } else {
+                                    println("No se encontraron ENTRANTES para el id $id")
+                                    null
+                                }
+                            }
+                        }
+
+                        "PRINCIPAL" -> {
+                            conn.prepareStatement("SELECT momento FROM PRINCIPALES WHERE id = ?").use { tipoStmt ->
+                                tipoStmt.setInt(1, id)
+
+                                val resultadoSub = tipoStmt.executeQuery()
+                                if (resultadoSub.next()) {
+                                    Principal(id, nombre, calorias, esVegana, ingredientesReceta, resultadoSub.getString("momento"))
+                                } else {
+                                    println("No se encontraron PRINCIPALES para el id $id")
+                                    null
+                                }
+                            }
+                        }
+
+                        "POSTRE" -> {
+                            conn.prepareStatement("SELECT es_dulce FROM POSTRES WHERE id = ?").use { tipoStmt ->
+                                tipoStmt.setInt(1, id)
+
+                                val resultadoSub = tipoStmt.executeQuery()
+                                if (resultadoSub.next()) {
+                                    Postre(id, nombre, calorias, esVegana, ingredientesReceta, resultadoSub.getBoolean("es_dulce"))
+                                } else {
+                                    println("No se encontraron POSTRES para el id $id")
+                                    null
+                                }
+                            }
+                        }
+
+                        else -> null
+                    }
+                }
+            }
+        }
+        return null
     }
 
     override fun obtenerTodas(): MutableList<Receta> {
@@ -73,8 +144,7 @@ class RecetaDAOH2 (
 
     override fun actualizarReceta(receta: Receta) {
         ds.connection.use { conn ->
-            conn.prepareStatement(
-                "UPDATE recetas SET nombre = ?, calorias = ?, es_vegana = ?, tipo = ? WHERE id = ?").use { stmt ->
+            conn.prepareStatement("UPDATE recetas SET nombre = ?, calorias = ?, es_vegana = ?, tipo = ? WHERE id = ?").use { stmt ->
                 stmt.setString(1, receta.nombre)
                 stmt.setInt(2, receta.calorias)
                 stmt.setBoolean(3, receta.esVegana)

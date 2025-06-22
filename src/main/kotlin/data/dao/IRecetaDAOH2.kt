@@ -5,7 +5,7 @@ import org.recualberti.model.Receta
 interface IRecetaDAOH2 {
     fun crearReceta(receta: Receta)
 
-    fun buscarReceta(nombre: String): Receta
+    fun buscarReceta(id: Int): Receta?
 
     fun obtenerTodas(): MutableList<Receta>
 
