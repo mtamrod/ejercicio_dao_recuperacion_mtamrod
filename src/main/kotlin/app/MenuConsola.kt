@@ -67,45 +67,66 @@ class MenuConsola(
     private fun salir() {
         ui.mostrar("Saliendo...", true)
         funcionando = false
-    } //Errores ❌
+    } //Errores ✅
 
     private fun crearReceta() {
-        val nombre = ui.leer("Nombre: ")
-        val calorias = ui.leer("Calorias: ").toInt()
-        val ingredientes = ui.leerLista("Ingredientes: ")
-        val esVegana = ui.leerBool("¿Es Vegana?(Si/No): ")
-
-        val tipo = ui.leer("Tipo de receta (entrante/principal/postre): ", true).lowercase()
-
-        val receta = when (tipo) {
-            "entrante" -> {
-                val esFrio = ui.leerBool("¿Frío? (Si/No): ", true)
-                Entrante(0, nombre, calorias, esVegana, ingredientes, esFrio)
-            }
-            "principal" -> {
-                val momento = ui.leer("¿Momento? (almuerzo, cena...): ", true)
-                Principal(0, nombre, calorias, esVegana, ingredientes, momento)
-            }
-            "postre" -> {
-                val esDulce = ui.leerBool("¿Dulce? (Si/No): ", true)
-                Postre(0, nombre, calorias, esVegana, ingredientes, esDulce)
-            }
-            else -> {
-                ui.error("El tipo de receta no es válido", true)
+        try {
+            val nombre = ui.leer("Nombre: ")
+            val caloriasInput = ui.leer("Calorías: ")
+            val calorias = caloriasInput.toIntOrNull()
+            if (calorias == null) {
+                ui.error("Las calorías deben ser un número entero.", true)
                 return
             }
+
+            val ingredientes = ui.leerLista("Ingredientes: ")
+            val esVegana = ui.leerBool("¿Es Vegana? (Si/No): ")
+
+            val tipo = ui.leer("Tipo de receta (entrante/principal/postre): ", true).lowercase()
+
+            val receta = when (tipo) {
+                "entrante" -> {
+                    val esFrio = ui.leerBool("¿Frío? (Si/No): ", true)
+                    Entrante(0, nombre, calorias, esVegana, ingredientes, esFrio)
+                }
+
+                "principal" -> {
+                    val momento = ui.leer("¿Momento? (almuerzo, cena...): ", true)
+                    Principal(0, nombre, calorias, esVegana, ingredientes, momento)
+                }
+
+                "postre" -> {
+                    val esDulce = ui.leerBool("¿Dulce? (Si/No): ", true)
+                    Postre(0, nombre, calorias, esVegana, ingredientes, esDulce)
+                }
+
+                else -> {
+                    ui.error("El tipo de receta no es válido", true)
+                    return
+                }
+            }
+            servicioReceta.crearReceta(receta)
+            ui.mostrar("Receta insertada correctamente.", true)
+            ui.pausa("Pulsa ENTER para continuar...")
+            ui.limpiarPantalla()
+        } catch (e: Exception) {
+            ui.error("Error al crear la receta: $e", true)
         }
-        servicioReceta.crearReceta(receta)
-        ui.mostrar("Receta insertada correctamente.", true)
-        ui.pausa("Pulsa ENTER para continuar...")
-        ui.limpiarPantalla()
-    } //Errores ❌
+    } //Errores ✅
 
     private fun buscarReceta() {
-        val id = ui.leer("Introduce el id de la receta: ", true).toInt()
+        val input = ui.leer("Introduce el id de la receta a buscar: ", true)
+        val id = input.toIntOrNull()
+
+        if(id == null) {
+            ui.error("El id debe de ser un número", true)
+            return
+        }
+
         if (!comprobarId(id)) {
             return
         }
+
         val receta = servicioReceta.buscarReceta(id)
 
         if (receta != null) {
@@ -143,7 +164,7 @@ class MenuConsola(
         } else {
             ui.error("No se encontró ninguna receta con el ID: $id", true)
         }
-    } //Errores ❌
+    } //Errores ✅
 
     private fun listarRecetas() {
         val recetas = servicioReceta.obtenerTodas()
@@ -182,7 +203,7 @@ class MenuConsola(
             )
             ui.mostrar(fila, true)
         }
-    } //Errores ❌
+    } //Errores ✅
 
     private fun eliminarReceta() {
         try {
